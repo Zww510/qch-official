@@ -357,13 +357,14 @@ export default {
         background-color: #ffffff;
         li {
           line-height: 40px;
-          font-size: 14px;
-          font-weight: 300;
+          font-size: 15px;
           width: 100%;
           line-height: 40px;
-          font-family: 微软雅黑;
-          text-shadow: 0.01em 0.01em 0.01em #000000!important;
+          //font-family: 微软雅黑;
+          //text-shadow: 0.01em 0.01em 0.01em #000000!important;
           letter-spacing: 2px;
+          color: #000000;
+          font-weight: lighter;
           .model {
             border-bottom: 1px solid #ccc;
             float: left;

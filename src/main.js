@@ -5,7 +5,10 @@ import router from './router'
 import swiper from 'vue-awesome-swiper'
 import 'swiper/css/swiper.css'
 import "./assets/css/iconfont/index.css";
+import { Message, MessageBox } from 'element-ui'
 
+Vue.prototype.$message = Message
+Vue.prototype.$confirm =  MessageBox
 
 axios.defaults.baseURL = 'http://admin.colorfulyun.cn/api/'
 
@@ -14,6 +17,9 @@ Vue.prototype.$axios = axios
 Vue.use(swiper);
 
 router.beforeEach((to,from,next) => {
+  if(to.meta.title) {
+    document.title = to.meta.title
+  }
   document.body.scrollTop = 0
   document.documentElement.scrollTop = 0
   window.pageYOffset = 0

@@ -140,12 +140,12 @@
 	vertical-align: middle;
 	/* width:384px;
 	height:410px; */
-	height: 310px;
-	width: 264px;
+	height: 288px;
+	width: 24%;
 	background-color:#000;
 	overflow:hidden;
 	position:relative;
-	margin:5px 6px;
+	margin:5px;
 }
 .index-product .pro-item img{
 	display:block;

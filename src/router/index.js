@@ -22,27 +22,42 @@ import Shop from '../views/shop.vue'
   {
     path: '/Home',
     name: 'Home',
-    component: Home
+    component: Home,
+    meta: {
+      title: '首页'
+    }
   },
   {
     path: '/about',
     name: 'About',
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
+    meta: {
+      title: '关于我们'
+    }
   },
   {
     path: '/Product',
     name: 'Product',
-    component: Product
+    component: Product,
+    meta: {
+      title: '产品中心'
+    }
   },
   {
     path: '/Solution',
     name: 'Solution',
-    component: Solution
+    component: Solution,
+    meta: {
+      title: '解决方案'
+    }
   },
   {
     path: '/NewList',
     name: 'NewList',
-    component: NewList
+    component: NewList,
+    meta: {
+      title: '新闻资讯'
+    }
   },
   {
     path: '/ShopDetail',
@@ -56,7 +71,10 @@ import Shop from '../views/shop.vue'
   {
     path: '/Download',
     name: 'Download',
-    component: Download
+    component: Download,
+    meta: {
+      title: '下载'
+    }
   },
 ]
 

@@ -89,22 +89,21 @@ export default {
     async submitted() {
       console.log('------',this.series)
       if (this.series == "") {
-        alert("请选择一款产品系列!");
+        this.$message.error({message: '请选择一款产品系列!', offset: 70, duration: 2000})
         return;
       } else if (this.types == "") {
-        alert("请选择一款产品型号");
+        this.$message.error({message: '请选择一款产品型号!', offset: 70, duration: 2000})
         return;
       } else {
         let { data: res } = await this.$axios.post("Drivers", {
           model: this.types
         });
-        console.log("-------", res);
         if (res.code == 200) {
           this.tableShow = true;
           this.tableDrive = [res.data];
         } else {
           this.tableShow = false;
-          alert(res.msg);
+          this.$message.error({message: res.msg, offset: 70, duration: 2000})
         }
       }
     }
