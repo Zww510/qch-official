@@ -1,7 +1,7 @@
 <template>
   <!--footer start-->
   <footer>
-    <div class="maxw main">
+    <div class="maxw main footer_main">
       <!--left-->
       <div class="left">
         <ul>
@@ -24,8 +24,8 @@
         </ul>
         <ul>
           <h2>解决方案心</h2>
-          <li v-for="(item,index) in solution" :key="item.id">
-            <router-link active-class="active" :to="{path:'/ShopDetail', query:{content: item.content}}">{{item.classify}}</router-link>
+          <li v-for="(item) in solution" :key="item.id">
+            <router-link active-class="active" :to="{path:'/scheme', query:{content: item.content}}">{{item.classify}}</router-link>
           </li>
         </ul>
         <ul>
@@ -38,6 +38,9 @@
           <h2>关于我们</h2>
           <li>
             <router-link to="/about">公司简介</router-link>
+          </li>
+          <li>
+            <a :href="colorFul.type == 1 ? colorFul.addr : 'javascript:void(0)'" :target="colorFul.type == 1 ? '_blank' : ''">关于七彩虹集团</a>
           </li>
         </ul>
       </div>
@@ -69,7 +72,8 @@ export default {
     return {
       company: {},
       solution: [],
-      series: []
+      series: [],
+      colorFul: []
     }
   },
   created() {
@@ -77,6 +81,7 @@ export default {
   },
   methods: {
     async getCompany() {
+      console.log("请求")
       let {data: res} = await this.$axios.get('Homepage');
       if(res.code == 200) {
          this.company = res.data
@@ -89,13 +94,19 @@ export default {
       if(date.code == 200) {
         this.series = date.data
       }
+      let {data: data} = await this.$axios.post('Jump/getJumpInfo',{name: '关于七彩虹集团'});
+      if(data.code == 200) {
+        data.data.type == 2
+        this.colorFul = data.data
+      }
     },
     async Warranty(type) {
-      let {data: res} = await this.$axios.post('Diversity',{type: type});
-      if(res.code == 200) {
-        console.log('数据',res.data)
-        this.$router.push({path: '/ShopDetail',query: {content: res.data.content}})
-      }
+      // let {data: res} = await this.$axios.post('Diversity',{type: type});
+      // if(res.code == 200) {
+      //   console.log('数据',res.data)
+      //   this.$router.push({path: '/ShopDetail',query: {content: res.data.content}})
+      // }
+      this.$router.push({path: '/ShopDetail',query: {content: type}})
     }
   }
 }
@@ -104,5 +115,10 @@ export default {
 <style lang="less" scoped>
 .footer{
   background-color: #2E2E2E!important;
+}
+@media (min-width: 1020px){
+  .footer_main {
+    max-width: 1400px;
+}
 }
 </style>

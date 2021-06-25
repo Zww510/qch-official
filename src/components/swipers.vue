@@ -7,8 +7,10 @@
         :key="index"
         class="item home_banner"
       >
-        <img class="swiImg" :src="item.img" @click="goBanner(item.detail)"/>
+        <img class="swiImg" :src="item.img" @click="goBanner(item.jumpAddr)" />
       </swiper-slide>
+      <div class="swiper-button-next swiper-button-white" slot="button-next"></div>
+      <div class="swiper-button-prev swiper-button-white" slot="button-prev"></div>
       <div class="swiper-pagination" id="pagination" slot="pagination"></div>
     </swiper>
   </div>
@@ -16,12 +18,6 @@
 
 <script>
 export default {
-  //   props: {
-  //     commodity: {
-  //       type: Array,
-  //       default: () => []
-  //     }
-  //   },
   data() {
     const that = this;
     return {
@@ -60,8 +56,12 @@ export default {
           el: ".swiper-pagination",
           clickable: true,
           type: "bullets"
+        },
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev"
         }
-      }
+      },
     };
   },
   created() {
@@ -70,24 +70,34 @@ export default {
   methods: {
     getBanner() {
       let that = this;
-      that.$axios.get("Banner").then(res => {
+      that.$axios.get("product/getBannerProduct").then(res => {
         that.commodity = res.data.data;
+      }).catch(err => {
       });
     },
-    goBanner(img) {
-      this.$router.push({path:'/ShopDetail', query:{imgBanner: img}})
+    goBanner(url) {
+      window.location.href = url
     }
   }
 };
 </script>
 
-<style>
+<style scoped>
+.swiImgs{
+  height: 500px;
+}
 .home_banner {
-  height:auto;
+  height: auto;
   width: 100%;
 }
 .home_banner img {
   height: 100%;
   width: 100%;
+}
+.swiper-button-prev, .swiper-container-rtl .swiper-button-next {
+  left: 100px!important;
+}
+.swiper-button-next, .swiper-container-rtl .swiper-button-prev{
+  right: 100px!important;
 }
 </style>

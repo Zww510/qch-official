@@ -1,31 +1,61 @@
 <template>
   <div class="shop_cntent">
+    <div class="header_nav">
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/Product' }">产品中心</el-breadcrumb-item>
+        <el-breadcrumb-item>{{title}}</el-breadcrumb-item>
+      </el-breadcrumb>
+    </div>
     <div class="shop_top">
-      <div class="thumb-example">
+      <div
+        class="thumb-example"
+        @mouseenter="onMouseOver"
+        @mouseleave="onMouseout"
+        
+      >
         <!-- swiper1 -->
-        <swiper class="swiper gallery-top" :options="swiperOptionTop" ref="swiperTop">
-          <swiper-slide v-for="(item,index) in data.thumb" :key="index">
+        <swiper class="swiper gallery-top" :options="swiperOptionTop" ref="swiperTop" v-if="swiperArray">
+          <swiper-slide v-for="(item,index) in swiperData" :key="index">
             <img :src="item" alt />
           </swiper-slide>
-          <div class="swiper-button-next swiper-button-white" slot="button-next"></div>
-          <div class="swiper-button-prev swiper-button-white" slot="button-prev"></div>
+          <div
+            class="swiper-button-next swiper-button-white"
+            slot="button-next"
+            :class="swiperArrows ? 'show' : 'hidden'"
+          ></div>
+          <div
+            class="swiper-button-prev swiper-button-white"
+            slot="button-prev"
+            :class="swiperArrows ? 'show' : 'hidden'"
+          ></div>
         </swiper>
         <!-- swiper2 Thumbs -->
-        <swiper class="swiper gallery-thumbs" :options="swiperOptionThumbs" ref="swiperThumbs">
-          <swiper-slide v-for="(item1,index1) in data.thumb" :key="index1">
+        <swiper
+          class="swiper gallery-thumbs"
+          :options="swiperOptionThumbs"
+          ref="swiperThumbs"
+          v-if="swiperArray"
+        >
+          <swiper-slide v-for="(item1,index1) in swiperData" :key="index1">
             <img :src="item1" alt />
           </swiper-slide>
         </swiper>
       </div>
       <div class="shop_details">
         <h1>{{data.title}}</h1>
-        <h2>{{data.introduce}}</h2>
+        <!-- <h2>{{data.introduce}}</h2> -->
+        <div class="shop_h2">
+          <h2 v-for="(item1,index1) in data.introduce" :key="index1">{{item1}}</h2>
+        </div>
         <div class="shop_buy flex">
           <span class="buy_button">立即购买</span>
-          <span v-for="(item,index) in data.links" :key="index">
-            <a :href="item.link" target="_blank">
-              <img :src="'http://admin.colorfulyun.cn' + item.img" alt />
-            </a>
+          <span v-if="data.links != ''" style="width: 100%;display: flex">
+            <span v-for="(item,index) in data.links" :key="index">
+              <a :href="item.link" target="_blank">
+                <img :src="'http://admin.colorfulyun.cn' + item.img" alt />
+              </a>
+            </span>
           </span>
         </div>
       </div>
@@ -47,8 +77,8 @@
     <!-- swiper3 Thumbs -->
     <div class="swiper_mask @touchmove.prevent" v-if="swiperShow">
       <div class="swiper_show_mask">
-        <swiper class="swiper gallery-top" :options="swiperOptionTop" ref="swiperTop">
-          <swiper-slide v-for="(item,index) in data.thumb" :key="index">
+        <swiper class="swiper swiper_details" :options="swiperOptionTop" ref="swiperTop">
+          <swiper-slide v-for="(item,index) in swiperData" :key="index">
             <img :src="item" alt />
           </swiper-slide>
           <div class="swiper-button-next swiper-button-white" slot="button-next"></div>
@@ -86,6 +116,7 @@ export default {
         loop: true,
         loopedSlides: 5, // looped slides should be the same
         spaceBetween: 10,
+        initialSlide: 0,
         navigation: {
           nextEl: ".swiper-button-next",
           prevEl: ".swiper-button-prev"
@@ -99,52 +130,39 @@ export default {
         centeredSlidesBounds: true,
         slidesPerView: 4,
         touchRatio: 0.2,
-        slideToClickedSlide: true
+        slideToClickedSlide: true,
+        initialSlide: 0
       },
       id: 0,
+      title: "",
       data: [],
       swiperShow: false,
       mask: false,
       howShow: false,
       parameter: [],
-      // parameterText: [
-      //   "产品型号",
-      //   "操作系统",
-      //   "处理器",
-      //   "主频",
-      //   "显示芯片",
-      //   "内存",
-      //   "存储",
-      //   "存储扩展",
-      //   "屏幕尺寸",
-      //   "屏幕类型",
-      //   "屏幕分辨率",
-      //   "wifi",
-      //   "蓝牙",
-      //   "摄像头",
-      //   "HDMI",
-      //   "USB",
-      //   "其他接口",
-      //   "扬声器",
-      //   "电池",
-      //   "电源",
-      //   "尺寸",
-      //   "重量"
-      // ]
+      swiperArrows: false,
+      swiperArray: false,//控制swiper联动
+      swiperData: []
     };
   },
   created() {
     this.id = this.$route.query.id;
+    this.title = this.$route.query.title;
   },
   mounted() {
-    this.$nextTick(() => {
-      const swiperTop = this.$refs.swiperTop.$swiper;
-      const swiperThumbs = this.$refs.swiperThumbs.$swiper;
-      swiperTop.controller.control = swiperThumbs;
-      swiperThumbs.controller.control = swiperTop;
-    });
     this.getProductList();
     this.getParam();
+  },
+  watch: {
+    swiperData(value,name) {
+      if(value == null) return []
+      this.$nextTick(() => {//初始化联动 Swiper
+          const swiperTop = this.$refs.swiperTop.$swiper;
+          const swiperThumbs = this.$refs.swiperThumbs.$swiper;
+          swiperTop.controller.control = swiperThumbs;
+          swiperThumbs.controller.control = swiperTop;
+        });
+    }
   },
   methods: {
     async getProductList() {
@@ -158,11 +176,13 @@ export default {
             if (x === undefined || y === undefined) return [];
             return [[x, y], ...zip(xs, ys)];
           };
-          this.data.links = zip(
-            this.data.link,
-            this.data.linkImg
-          ).map(([link, img]) => ({ link, img }));
+          this.data.links = zip( this.data.link, this.data.linkImg ).map(([link, img]) => ({ link, img }));
         }
+        this.data.introduce = String(res.data[0].introduce).split("#");//进行分段
+        this.swiperArray = true;//swiper联动显示，否则默认显示最后一张
+        this.data.content = this.data.content.replace(/<br>/g,' ')//去除全局的 br 标签
+        this.swiperData = this.data.thumb
+        //console.log('swiper联动数据',this.data.thumb)
       } else {
         console.log("失败", res);
       }
@@ -205,14 +225,35 @@ export default {
       };
       document.body.style.overflow = ""; //出现滚动条
       document.removeEventListener("touchmove", m, { passive: true });
+    },
+    onMouseOver() {
+      this.swiperArrows = true;
+    },
+    onMouseout() {
+      this.swiperArrows = false;
     }
   }
 };
 </script>
 
 <style lang="less" scoped>
+.el-breadcrumb {
+  height: 40px;
+  line-height: 40px;
+}
+.header_nav {
+  width: 75%;
+  margin: 0 auto;
+}
+.hidden {
+  opacity: 0;
+}
+.show {
+  opacity: 1;
+}
 .shop {
   margin-top: 0 !important;
+  width: 75% !important;
 }
 .mask {
   position: fixed;
@@ -228,11 +269,12 @@ export default {
 }
 
 .shop_bottom {
+  background-color: #f8f8f8;
   .Parameter {
     width: 100%;
     height: 100px;
     text-align: center;
-    background-color: #f8f8f8;
+    background-color: #f2f2f2;
     color: #6a6a6a;
     line-height: 100px;
     span {
@@ -249,6 +291,10 @@ export default {
   .swiper-slide {
     background-size: cover;
     background-position: center;
+  }
+  &.swiper_details {
+    height: 100%;
+    width: 100%;
   }
   &.gallery-top {
     height: 80%;
@@ -277,38 +323,41 @@ export default {
     }
   }
   .thumb-example {
-    height: 480px;
-    width: 560px;
+    height: 500px;
+    width: 400px;
     margin-left: 20px;
     margin-bottom: 40px;
     // background-color: $black;
   }
   .shop_top {
-    margin: 20px;
+    margin-top: 40px;
+    margin: 0 auto;
+    width: 75%;
     display: -webkit-box; /* 老版本语法: Safari, iOS, Android browser, older WebKit browsers. */
     display: -moz-box; /* 老版本语法: Firefox (buggy) */
     display: -ms-flexbox; /* 混合版本语法: IE 10 */
     display: -webkit-flex; /* 新版本语法: Chrome 21+ */
     display: flex; /* 新版本语法: Opera 12.1, Firefox 22+ */
-    -webkit-box-pack: center;
-    -moz-justify-content: center;
-    -webkit-justify-content: center;
-    justify-content: center;
+    // -webkit-box-pack: center;
+    // -moz-justify-content: center;
+    // -webkit-justify-content: center;
+    // justify-content: center;
     .shop_details {
-      margin: 120px 0 0 130px;
+      margin: 120px 0 0 160px;
       width: 30%;
       h1 {
         color: #ff8e4a;
       }
-      h2 {
+      .shop_h2 {
         margin-top: 20px;
-        color: #ffffff;
+      }
+      h2 {
+        margin-top: 5px;
         font-size: 14px;
         padding-right: 50px;
         word-break: break-all;
       }
       .shop_buy {
-        color: #ffffff;
         margin-top: 40px;
         -webkit-box-align: center;
         -moz-align-items: center;
@@ -365,6 +414,7 @@ export default {
           letter-spacing: 2px;
           color: #000000;
           font-weight: lighter;
+          text-shadow: 0 0 1.5px #ccc !important;
           .model {
             border-bottom: 1px solid #ccc;
             float: left;
@@ -384,7 +434,7 @@ export default {
       position: fixed;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -35%);
+      transform: translate(-50%, -46%);
       width: 800px;
       height: 800px;
       z-index: 1001;
@@ -410,15 +460,15 @@ export default {
       h1 {
         color: #ff8e4a;
       }
-      h2 {
+      .shop_h2 {
         margin-top: 20px;
-        color: #ffffff;
+      }
+      h2 {
         font-size: 14px;
         padding-right: 50px;
         word-break: break-all;
       }
       .shop_buy {
-        color: #ffffff;
         margin-top: 40px;
         -webkit-box-align: center;
         -moz-align-items: center;
@@ -465,6 +515,7 @@ export default {
           font-weight: 300;
           width: 100%;
           line-height: 40px;
+          text-shadow: 0 0 1.5px #ccc !important;
           .model {
             border-bottom: 1px solid #ccc;
             float: left;
@@ -521,5 +572,17 @@ export default {
   display: -ms-flexbox; /* 混合版本语法: IE 10 */
   display: -webkit-flex; /* 新版本语法: Chrome 21+ */
   display: flex; /* 新版本语法: Opera 12.1, Firefox 22+ */
+}
+.swiper-button-next:after,
+.swiper-container-rtl .swiper-button-prev:after {
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+.swiper-button-prev:after,
+.swiper-container-rtl .swiper-button-next:after {
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 5px 10px;
+  border-radius: 5px;
 }
 </style>

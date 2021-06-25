@@ -31,7 +31,7 @@
       <div class="MainContent">
         <img :src="homeDate.company" />
         <p>&nbsp;</p>
-        <p>{{homeDate.company_profile}}</p>
+        <p v-for="(item,index) in homeDate.company_profile" :key="index">{{item}}</p>
       </div>
       <!--MainContent end-->
     </div>
@@ -84,7 +84,7 @@ export default {
   mounted() {
     this.dbMap();
     let data = JSON.parse(localStorage.getItem('home'));
-    console.log('---------',data)
+    
     if(data) {
       this.homeDate = data
     }
@@ -98,8 +98,8 @@ export default {
     },
     createMap() {
       var map = new BMap.Map("dituContent"); //在百度地图容器中创建一个地图
-      var point = new BMap.Point(114.043672, 22.64598); //定义一个中心点坐标
-      map.centerAndZoom(point, 15); //设定地图的中心点和坐标并将地图显示在地图容器中
+      var point = new BMap.Point(114.119046,22.658884); //定义一个中心点坐标
+      map.centerAndZoom(point, 16); //设定地图的中心点和坐标并将地图显示在地图容器中
       window.map = map; //将map变量存储在全局
     },
     setMapEvent() {
@@ -131,9 +131,9 @@ export default {
       var opts = {
         width: 300, // 信息窗口宽度
         height: 70, // 信息窗口高度
-        title: "七彩虹" // 信息窗口标题
+        title: "七彩虹colorfly数码运营中心" // 信息窗口标题
       };
-      var infoWindow = new BMap.InfoWindow("地址：深圳市龙华区民治街道民治大道展滔科技大厦C座7层706", opts); // 创建信息窗口对象
+      var infoWindow = new BMap.InfoWindow("地址：广东省深圳市龙岗区吉华街道甘李五路1号科伦特大厦B座3层", opts); // 创建信息窗口对象
       map.openInfoWindow(infoWindow, map.getCenter()); // 打开信息窗口
     }
   }
@@ -147,8 +147,10 @@ export default {
 .MainContent p{
 	margin:0;
 	line-height:24px;
-	font-size:16px;
-	color:#fff;
+  font-size:15px;
+  letter-spacing: 1px;
 	padding:0;
+  text-align: justify;
+  text-indent: 2em;
 }
 </style>

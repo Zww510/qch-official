@@ -1,10 +1,8 @@
 @charset "utf-8";
 /* CSS Document */
 
-*{margin:0;padding:0;-webkit-tap-highlight-color: transparent;font-family:'microsoft yahei';}
-body{
-	font-family:'microsoft yahei';
-}
+*{margin:0;padding:0;-webkit-tap-highlight-color: transparent;}
+
 a{
 text-decoration: none;
 color:#333;
@@ -112,21 +110,22 @@ header{
 	/*border-bottom:1px solid #ddd;*/
 }
 header .main{
-	width:90%;
+	width:75%;
 	height:60px;
 	margin:0 auto;
 }
 header .main .logo{
 	display:block;
-	height:48px;
-	margin-top:6px;
+	height:28px;
+	margin-top:16px;
 	float:left;
+	margin-left: 30px;
 	/* margin-right:18px; */
 	/* margin-right:30px; */
 }
 header .main .logo img{
 	display:block;
-	height:48px;
+	height:28px;
 }
 header .main nav{
 	float:right;
@@ -580,7 +579,6 @@ header .main .menu{
 	border:1px solid #888;
 	line-height:40px;
 	font-size:14px;
-	color:#fff;
 	text-align:center;
 	border-radius:3px;
 	transition-duration:0.2s;
@@ -588,7 +586,6 @@ header .main .menu{
 }
 .commonMoreBut:hover{
 	background-color:#1175B3;
-	color:#fff;
 	border:1px solid #0e679f;
 }
 
@@ -719,7 +716,6 @@ footer .main .right .tel{
 	height:70px;
 	margin-top:-5px;
 	/* background-color:#DCDADA; */
-	background-color: #525252;
 }
 .mian-cur-position .mcp-frim{
 	height:70px;
@@ -735,8 +731,6 @@ footer .main .right .tel{
 	height:70px;
 	line-height:70px;
 	font-size:20px;
-	/* color:#222; */
-	color:#fff;
 	font-weight: normal;
 	font-weight: bold;
 }
@@ -746,7 +740,6 @@ footer .main .right .tel{
 	height:70px;
 	line-height:70px;
 	font-size:24px;
-	color:#fff;
 	font-weight: normal;
 	margin:0 6px;
 }
@@ -756,7 +749,6 @@ footer .main .right .tel{
 	height:70px;
 	line-height:70px;
 	font-size:16px;
-	color:#fff;
 	text-transform:uppercase;
 }
 .mian-cur-position .mcp-frim .curpor{
@@ -771,7 +763,6 @@ footer .main .right .tel{
 	line-height:70px;
 	font-size:15px;
 	/* color:#222; */
-	color: #fff;
 }
 .mian-cur-position .mcp-frim .curpor a:hover{
 	color:#1175B3;
@@ -842,7 +833,6 @@ footer .main .right .tel{
 	height:70px;
 	line-height:70px;
 	font-size:20px;
-	color:#222;
 	font-weight: normal;
 	font-weight: bold;
 }
@@ -904,7 +894,6 @@ footer .main .right .tel{
 	padding:20px 0 30px 0;
 	margin:0 auto;
 	text-align:center;
-	background-color:#525252;
 	position:relative; z-index:6;
 }
 .mian-cur-nav a{
@@ -959,7 +948,6 @@ footer .main .right .tel{
 	margin:0;
 	line-height:24px;
 	font-size:16px;
-	color:#fff;
 	padding:0;
 }
 .MainContent img{
@@ -1057,7 +1045,7 @@ zoom:expression( function(elm)
 header{
 	width:100%;
 	min-width:280px;
-	height:52px;
+	height:60px;
 	background-color:#fff;
 	position:fixed;
 	top:0;
@@ -1073,11 +1061,12 @@ header .main .logo{
 	height:52px;
 	float:left;
 	margin-right:18px;
+	margin-left: 30px;
 }
 header .main .logo img{
 	display:block;
-	height:40px;
-	margin-top:6px;
+	height:28px;
+	margin-top:16px;
 }
 
 header .main .menu{
@@ -1307,7 +1296,6 @@ header .main .PCsearch{
 	border:1px solid #888;
 	line-height:40px;
 	font-size:14px;
-	color:#fff;
 	text-align:center;
 	border-radius:3px;
 	transition-duration:0.2s;
@@ -1315,7 +1303,6 @@ header .main .PCsearch{
 }
 .commonMoreBut:hover{
 	background-color:#1175B3;
-	color:#fff;
 	border:1px solid #0e679f;
 }
 
@@ -1421,7 +1408,6 @@ footer .main .right .tel{
 	height:50px;
 	margin-top:-4px;
 	/* background-color:#DCDADA; */
-	background-color: #525252;
 }
 .mian-cur-position .mcp-frim{
 	width:96%;
@@ -1444,7 +1430,6 @@ footer .main .right .tel{
 	float:left;
 	line-height:50px;
 	font-size:15px;
-	color:#fff;
 }
 .mian-cur-position .mcp-frim .curpor a:hover{
 	color:#1175B3;
@@ -1515,7 +1500,6 @@ footer .main .right .tel{
 	padding:20px 0 20px 0;
 	margin:0 auto;
 	text-align:center;
-	background-color:#525252;
 	position:relative; z-index:6;
 }
 .mian-cur-nav a{

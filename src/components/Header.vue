@@ -7,7 +7,7 @@
       <nav>
         <ul class="PCNenuMain">
           <li class="mn">
-            <router-link to="/Home">首页</router-link>
+            <router-link to="/">首页</router-link>
           </li>
           <li class="mn">
             <router-link to="/Product">产品中心</router-link>
@@ -31,7 +31,7 @@
               <li v-for="item in solut" :key="item.id">
                 <router-link
                   active-class="active"
-                  :to="{path:'/ShopDetail', query:{content: item.content}}"
+                  :to="{path:'/scheme', query:{content: item.content}}"
                   class="serv"
                 >
                   <span>{{item.classify}}</span>
@@ -66,9 +66,9 @@
           <li class="mn">
             <router-link to="/about">关于我们</router-link>
           </li>
-          <li class="mn">
+          <!-- <li class="mn">
             <a @click="linkDownload('https://partner.jiaoguanyi.com')">合作伙伴平台</a>
-          </li>
+          </li> -->
         </ul>
         <div class="menu" id="menuOpen" @click="showMenu">
           <i class="icon-eee7"></i>
@@ -116,7 +116,7 @@
               <ul class="SonContent" v-show="products == 1">
                 <li v-for="item in solut" :key="item.id">
                   <router-link
-                    :to="{path:'/ShopDetail', query:{content: item.content}}"
+                    :to="{path:'/scheme', query:{content: item.content}}"
                   >{{item.classify}}</router-link>
                 </li>
               </ul>
@@ -161,12 +161,12 @@
                 </li>
               </ul>
             </li>
-            <li class="son">
+            <!-- <li class="son">
               <a  @click="linkDownload('https://partner.jiaoguanyi.com')" class="mbut">
                 <span>合作伙伴平台</span>
                 <em>Application</em>
               </a>
-            </li>
+            </li> -->
           </ul>
         </div>
       </nav>
@@ -201,6 +201,7 @@ export default {
       }
       let { data: result } = await this.$axios.get("Solution");
       if (result.code == 200) {
+        console.log('------------解决方案',result)
         this.solut = result.data;
       }
       let { data: date } = await this.$axios.post("Product/getSeries", {type: 2});
@@ -218,10 +219,12 @@ export default {
       window.open(url, "_blank");
     },
     async Warranty(type) {
-      let {data: res} = await this.$axios.post('Diversity',{type: type});
-      if(res.code == 200) {
-        this.$router.push({path: '/ShopDetail',query: {content: res.data.content}})
-      }
+      // let {data: res} = await this.$axios.post('Diversity',{type: type});
+      // console.log('-----------首页',res)
+      // if(res.code == 200) {
+      //   this.$router.push({path: '/ShopDetail',query: {content: res.data.content}})
+      // }
+      this.$router.push({path: '/ShopDetail',query: {content: type}})
     }
   }
 };
@@ -243,4 +246,16 @@ export default {
     background-color: #525252;
   }
 }
+@media (max-width: 1200px) {
+  header .main{
+    width: 85%;
+  }
+}
+@media (max-width: 1500px) {
+  header .main{
+    width: 85%;
+  }
+}
+
+
 </style>

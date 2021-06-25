@@ -1,11 +1,12 @@
 <template>
   <div class="details">
-    <div class="shop">
+    <div class="shop" id="shop_detail">
       <!-- <img src="../assets/image/shop-detail.jpg" alt /> -->
-      <div v-html="content" class="shop_content"></div>
+
       <div v-if="banner">
         <img :src="banner" alt="">
       </div>
+      <div v-else v-html="content" class="shop_content"></div>
     </div>
   </div>
 </template>
@@ -18,16 +19,27 @@ export default {
     };
   },
   watch: {
-    $route(to,from) {
-      if(to.query.content != from.query.content) {
-        this.content = to.query.content
+    $route(to, from) {
+      if (to.fullPath != from.fullPath) {
+        // this.newList = to.query.newList
+        this.getDiversity(to.query.content)
       }
     }
   },
   created() {
-    this.content = this.$route.query.content;
+    console.log('我是页面的created生命周期')
     this.banner = this.$route.query.imgBanner
+    this.getDiversity(this.$route.query.content)
   },
+  methods: {
+    async getDiversity(type) {
+      let { data: res } = await this.$axios.post('Diversity', { type: type });
+      if (res.code == 200) {
+        this.content = res.data.content
+      }
+       console.log('请求次数', res)
+    }
+  }
 };
 </script>
 
@@ -44,14 +56,21 @@ export default {
     height: 100%;
   }
 }
-.shop_content img{
+.shop_content img {
   display: block;
 }
-.shop_content {
-  color: #ffffff;
-  margin-bottom: 20px;
+.shop {
+  width: 75% !important;
+  margin: 0 auto;
 }
-.shop{
-  width: 100%!important;
+</style>
+
+<style lang="less" scoped>
+#shop_detail {
+  width: 1200px !important;
+  text-indent: 2em;
+  .shop_content h1 p {
+    text-align: justify !important;
+  }
 }
 </style>
